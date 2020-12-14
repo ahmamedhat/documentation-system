@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "documentation-system"
+    }
+  },
+  "defaultProject": "documentation-system",
+  "cli": {
+    "analytics": false
+  }
 }

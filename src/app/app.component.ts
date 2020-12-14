@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +6,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'documentation-system';
+  @ViewChild('image' , {static:true}) imageFile:ElementRef;
+  file:File;
+
+  
+  /* onAddfile(event){
+    this.file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {    
+      this.imageFile.nativeElement.src = e.target.result;      
+    };
+    reader.readAsDataURL(this.file);
+  } */
+
 }
