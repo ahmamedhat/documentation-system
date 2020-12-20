@@ -10,9 +10,12 @@ button {
     font-size: .9rem;
     cursor: pointer;
     border-radius: 7px;
+    border: none;
 }
 button:focus {
     background-color: rgb(87, 87, 87);
+    border:none;
+    outline: none;
 }
 ul {
     display: block;

@@ -38,6 +38,7 @@ li:focus {
 .buttons {
     display: flex;
     float: right;
+    margin-top: 10px;
 }
 .buttons button {
     margin-left: 5px;
@@ -47,6 +48,7 @@ li:focus {
     color: white;
     cursor: pointer;
     border-radius: 7px;
+    border: none;
 }
 button:focus {
     background-color: rgb(87, 87, 87);

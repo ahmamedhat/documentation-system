@@ -9,6 +9,7 @@ export class docService {
     documents: files[] = [];
     dPdocuments:dpFiles[] = [];
     documentsChanged = new Subject<files[]>();    
+    dpDocumentsChanged = new Subject<dpFiles[]>();    
 
     
     addDocument(document:files){
@@ -30,4 +31,11 @@ export class docService {
         this.documentsChanged.next(this.documents);
     }
 
+    addDpDocument(document:dpFiles){
+        this.dPdocuments.push(document);
+        this.dpDocumentsChanged.next(this.dPdocuments);
+    }
+    getDpDocuments(){
+        return this.dPdocuments;
+    }
 }

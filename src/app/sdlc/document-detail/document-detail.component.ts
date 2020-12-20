@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnDestroy, OnInit} from '@angular/core';
+import { FormArray, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
@@ -13,12 +13,12 @@ import { files } from 'src/app/files.model';
 })
 export class DocumentDetailComponent implements OnInit , OnDestroy {
 
+  df:FormGroup;
   switchTabs:boolean = false;
   file:files ;
   imageFile:File;
   documents:files[] = [];
   dPimageFile:File;
-  dPdocuments:dpFiles[] = [];
   sub:Subscription;
 
   constructor(private documentService:docService , private route:Router) { }
@@ -29,6 +29,7 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
         this.documents = documents
       }
     )
+    this.formInit();
     
   }
 
@@ -56,16 +57,47 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
 
   /* Design Phase Component Typescript Code From Here */
 
-  addDocument(){
-    
+  formInit(){
+    let documentArray = new FormArray([]);
+    documentArray.push (new FormGroup({
+      'dpName': new FormControl(null , Validators.required),
+      'dpFile': new FormControl(null, Validators.required)
+    }) 
+    )
+
+    this.df = new FormGroup({
+      'documents': documentArray,
+    })
+
   }
-  onDpSubmit(form){
-    console.log(form);
+
+  addDocument(){
+    this.controls2.push(new FormGroup({
+      'dpName': new FormControl(null , Validators.required),
+      'dpFile': new FormControl(null , Validators.required)
+    }))
+  }
+  onDpSubmit(){
+    const dpDocuments = this.df.value.documents;
+    for(let document of dpDocuments){
+      let name = document.dpName;
+      let file = this.dPimageFile;
+      let documentFile = new dpFiles(name , file);
+      this.documentService.addDpDocument(documentFile);
+    }
 
   }
   onUploadDp(event){
     this.dPimageFile = event.target.files[0];
   }
+  get controls() { 
+    return (<FormArray>this.df.get('documents')).controls;
+  }
+  get controls2() { 
+    return (<FormArray>this.df.get('documents'));
+  }
+
+  /* End of Design Phase Code */
 
   ngOnDestroy(){
     this.sub.unsubscribe();
