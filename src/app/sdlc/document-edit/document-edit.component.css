@@ -30,3 +30,6 @@ button:focus {
 .disabled {
     opacity: .7;
 }
+img {
+    width: 9vw;
+}

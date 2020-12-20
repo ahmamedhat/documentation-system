@@ -11,9 +11,11 @@ const routes: Routes = [
   children:[
     {path:'detail' , component:DocumentDetailComponent},
     {path:':id' , component:DocumentPreviewComponent},
-    {path:':id/edit' , component:DocumentEditComponent}
+    {path:':id/edit' , component:DocumentEditComponent},
   ] } ,  
-  {path:'all-files' , component: AllFilesComponent}
+  {path:'all-files' , component: AllFilesComponent},
+  {path:'' , redirectTo:'/sdlc' , pathMatch:'full'},
+  {path:'**' , redirectTo:'/sdlc'}
 ];
 
 @NgModule({

@@ -13,7 +13,8 @@
                 <label for="name" id="name">Requirement 4:</label>
                 <input type="text" name="req4" [ngModel] = "req4" required>
                 <label for="img">Select image:</label>
-                <input type="file" id="img" name="file" [ngModel] = "file" required accept="image/*">
+                <input type="file" name="file" (change)="onUpload($event)" [ngModel] = "file" accept="image/*">
+                <img #img src="" alt="file">
             </div>
             <div class="buttons">
                 <button type="submit" [disabled]="!form.valid" [ngClass]="{'disabled':!form.valid}">Save</button>

@@ -26,6 +26,7 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
         this.documents = documents
       }
     )
+    
   }
 
   onSwitchTabs(state:boolean){
@@ -41,12 +42,21 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
     const req2 = form.value.req2;
     const req3 = form.value.req3;
     const req4 = form.value.req4;
-    const file = this.imageFile;
+    const file = this.checkImage(this.imageFile);
     const document = new files(name , req1 , req2 , req3 , req4 , file);
     this.documentService.addDocument(document);
     
     form.reset();
     this.route.navigate(['/sdlc']);
+  }
+
+  checkImage(image:File){
+    if (image){
+      return image;
+    }
+    else{
+      return null;
+    }
   }
 
 
