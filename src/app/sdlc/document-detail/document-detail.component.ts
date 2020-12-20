@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit} from '@angular/core';
 import { FormArray, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
 import { dpFiles } from 'src/app/dpFiles.model';
@@ -21,7 +21,7 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
   dPimageFile:File;
   sub:Subscription;
 
-  constructor(private documentService:docService , private route:Router) { }
+  constructor(private documentService:docService , private route:Router , private router:ActivatedRoute) { }
 
   ngOnInit(): void {
     this.sub = this.documentService.documentsChanged.subscribe(
@@ -85,6 +85,7 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
       let documentFile = new dpFiles(name , file);
       this.documentService.addDpDocument(documentFile);
     }
+    this.route.navigate(['../'] , {relativeTo:this.router});
 
   }
   onUploadDp(event){

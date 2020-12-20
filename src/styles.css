@@ -24,3 +24,10 @@ input[type="file"] {
 input:focus {
     outline: 3px solid transparent;
   }
+button{
+    outline: none;
+    border: none;
+}
+button:hover {
+    opacity: 0.8;
+}
