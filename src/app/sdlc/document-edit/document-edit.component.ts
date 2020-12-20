@@ -64,7 +64,7 @@ export class DocumentEditComponent implements OnInit {
     const req3 = form.value.req3;
     const req4 = form.value.req4;
     const file = this.checkFile(this.image);
-    const document = new files(name , req1 , req2 , req3 , req4 , file);
+    const document = new files(name , file , req1 , req2 , req3 , req4);
     this.documentService.editDocument(document , this.id);
 
     this.route.navigate(['../'] , {relativeTo:this.router});

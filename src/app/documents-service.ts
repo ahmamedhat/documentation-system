@@ -1,17 +1,15 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
+import { dpFiles } from "./dpFiles.model";
 import { files } from "./files.model";
 
 @Injectable({providedIn:"root"})
 
 export class docService {
-    creatState = new Subject<boolean>();
-    state = false;
     documents: files[] = [];
-    documentsChanged = new Subject<files[]>();
-    documentChoosed = new Subject<files>();
-    prevState = new Subject<boolean>();
-    
+    dPdocuments:dpFiles[] = [];
+    documentsChanged = new Subject<files[]>();    
+
     
     addDocument(document:files){
         this.documents.push(document);

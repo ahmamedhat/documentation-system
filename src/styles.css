@@ -6,3 +6,20 @@
 .active{
     background-color: rgb(78, 52, 78);
 }
+
+input {
+    font-size: 16px;
+    font-size: max(16px, 1em);
+    font-family: inherit;
+    padding: 0.25em 0.5em;
+    background-color: rgb(214, 214, 214);
+    border: 2px solid var(--input-border);
+    border-radius: 4px;
+  }
+input[type="file"] {
+    font-size: 0.9em;
+    padding-top: 0.35rem;
+}
+input:focus {
+    outline: 3px solid transparent;
+  }

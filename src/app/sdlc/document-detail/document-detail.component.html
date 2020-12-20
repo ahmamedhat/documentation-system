@@ -25,16 +25,17 @@
         </form>
     </div>
     <div class="d-phase" *ngIf="switchTabs">
-        <div class="reqs">
-            <label for="name" id="name">File Name:</label>
-            <input type="text">
-            <label for="img">Select image:</label>
-            <input type="file" id="img" name="img" accept="image/*">
-        </div>
-        <div class="buttons">
-            <button>Add Document</button>
-            <button>Save</button>
-        </div>
-        
+        <form #df="ngForm" (ngSubmit)="onDpSubmit(df)">
+            <div class="reqs" *ngFor="let file of filesArray">
+                <label for="name" id="name">File Name:</label>
+                <input type="text" ngModel required name="dPName">
+                <label for="img">Select image:</label>
+                <input type="file" name="dPimg" required (change)="onUploadDp($event)" ngModel accept="image/*">
+            </div>
+            <div class="buttons">
+                <button type="button" (click)="addDocument()">Add Document</button>
+                <button type="submit">Save</button>
+            </div>
+        </form>
     </div>
 </div>

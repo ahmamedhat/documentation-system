@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
+import { dpFiles } from 'src/app/dpFiles.model';
 import { files } from 'src/app/files.model';
 
 @Component({
@@ -12,12 +13,14 @@ import { files } from 'src/app/files.model';
 })
 export class DocumentDetailComponent implements OnInit , OnDestroy {
 
-  @ViewChild('img' , {static:true}) image:ElementRef;
   switchTabs:boolean = false;
   file:files ;
   imageFile:File;
   documents:files[] = [];
+  dPimageFile:File;
+  dPdocuments:dpFiles[] = [];
   sub:Subscription;
+
   constructor(private documentService:docService , private route:Router) { }
 
   ngOnInit(): void {
@@ -42,23 +45,27 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
     const req2 = form.value.req2;
     const req3 = form.value.req3;
     const req4 = form.value.req4;
-    const file = this.checkImage(this.imageFile);
-    const document = new files(name , req1 , req2 , req3 , req4 , file);
+    const file = this.imageFile;
+    const document = new files(name , file , req1 , req2 , req3 , req4 );
     this.documentService.addDocument(document);
     
     form.reset();
     this.route.navigate(['/sdlc']);
   }
 
-  checkImage(image:File){
-    if (image){
-      return image;
-    }
-    else{
-      return null;
-    }
-  }
 
+  /* Design Phase Component Typescript Code From Here */
+
+  addDocument(){
+    
+  }
+  onDpSubmit(form){
+    console.log(form);
+
+  }
+  onUploadDp(event){
+    this.dPimageFile = event.target.files[0];
+  }
 
   ngOnDestroy(){
     this.sub.unsubscribe();
