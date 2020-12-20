@@ -1,0 +1,38 @@
+.container {
+    margin: auto;
+}
+button {
+    background-color: rgb(36, 36, 36);
+    color: white;
+    width: 11em;
+    font-weight: 600;
+    height: 3em;
+    font-size: .9rem;
+    cursor: pointer;
+    border-radius: 7px;
+}
+button:focus {
+    background-color: rgb(87, 87, 87);
+}
+ul {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    border-radius: 7px;
+
+}
+ul li {
+    list-style-type: none;
+    background-color: rgb(36, 36, 36);
+    color: white;
+    cursor: pointer;
+    height: 2em;
+    border-radius: 7px;
+    margin-bottom: 10px;
+    padding-top: .6em;
+
+}
+ul li:hover {
+    background-color: rgb(87, 87, 87);
+}

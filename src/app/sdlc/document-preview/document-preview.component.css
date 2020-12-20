@@ -1,0 +1,38 @@
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+.reqs {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.req-info {
+    display: flex;
+    margin-bottom: 2em;
+}
+.req-info p {
+    margin-right: 10px;
+}
+
+.buttons {
+    margin-top: 3em;
+    display: flex;
+    float: right;
+}
+.buttons button {
+    margin-left: 5px;
+    width: 8em;
+    height: 2em;
+    background-color: rgb(36, 36, 36);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+}
+button:focus {
+    background-color: rgb(87, 87, 87);
+}
+img {
+    width: 9vw;
+}

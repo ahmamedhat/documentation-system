@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    width: 95%;
+    margin: auto;
+    margin-top: 50px;
+}
+.left-col {
+    width: 25%;
+}
+.right-col {
+    width: 75%;
+
+}

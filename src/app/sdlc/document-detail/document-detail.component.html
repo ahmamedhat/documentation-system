@@ -1,0 +1,40 @@
+<div class="container">
+    <ul>
+        <li (click)="onSwitchTabs(false)" [ngClass]="{'active': !switchTabs}">Requirements Phase</li>
+        <li (click)="onSwitchTabs(true)" [ngClass]="{'active': switchTabs}">Design Phase</li>
+    </ul>
+    <div class="req-phase" *ngIf="!switchTabs">
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+            <div class="reqs">
+                <label for="name" id="name">Document Name:</label>
+                <input type="text" name="name" ngModel required>
+                <label for="name" id="name">Requirement 1:</label>
+                <input type="text" name="req1" ngModel required>
+                <label for="name" id="name">Requirement 2:</label>
+                <input type="text" name="req2" ngModel required>
+                <label for="name" id="name">Requirement 3:</label>
+                <input type="text" name="req3" ngModel required>
+                <label for="name" id="name">Requirement 4:</label>
+                <input type="text" name="req4" ngModel required>
+                <label for="img">Select image:</label>
+                <input type="file" name="file" (change)="onUpload($event)" ngModel required accept="image/*">
+            </div>
+            <div class="buttons">
+                <button type="submit" [disabled]="!form.valid" [ngClass]="{'disabled':!form.valid}">Save</button>
+            </div>
+        </form>
+    </div>
+    <div class="d-phase" *ngIf="switchTabs">
+        <div class="reqs">
+            <label for="name" id="name">File Name:</label>
+            <input type="text">
+            <label for="img">Select image:</label>
+            <input type="file" id="img" name="img" accept="image/*">
+        </div>
+        <div class="buttons">
+            <button>Add Document</button>
+            <button>Save</button>
+        </div>
+        
+    </div>
+</div>
