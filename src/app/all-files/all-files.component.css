@@ -30,6 +30,9 @@ ul li {
 ul li:hover {
     background-color: rgb(87, 87, 87);
 }
+.docs-list ul li:focus {
+    background-color: rgb(78, 52, 78);
+}
 img {
     max-width: 200px;
 }
