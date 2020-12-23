@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
 import { files } from 'src/app/files.model';
+import { initFiles } from 'src/app/initFiles.model';
 
 @Component({
   selector: 'app-document-preview',
@@ -10,8 +11,9 @@ import { files } from 'src/app/files.model';
   styleUrls: ['./document-preview.component.css']
 })
 export class DocumentPreviewComponent implements OnInit , OnDestroy {
+  phase:boolean;
   file:File;
-  @ViewChild('img' , {static:true}) imageFile;
+  @ViewChild('img' , {static:false}) imageFile;
   sub:Subscription;
   id:number;
   document:files = {
@@ -22,6 +24,15 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
     req4:'',
     file:null,
   };
+  initDocument:initFiles = {
+    documentName:'',
+    date1:'',
+    date2:'',
+    req2:'',
+    req3:'',
+    req4:'',
+    req5:'',
+  };
 
   constructor(private route:ActivatedRoute, private router:Router , private documentService:docService) { }
 
@@ -29,19 +40,24 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
     this.sub = this.route.params.subscribe(
       (params:Params) =>{
         this.id = +params['id'];
-        if(!this.documentService.getDocument(this.id)){
+        if(!this.documentService.getFromAllDocuments(this.id)){
           this.router.navigate(['../'] , {relativeTo:this.route});
         }
-        else{
-          this.document = this.documentService.getDocument(this.id);
+        else if(!this.documentService.documentCheck(this.id)){
+          this.phase = false;
+          this.document = this.documentService.getFromAllDocuments(this.id);
           this.file = this.document.file;
           this.imageInit(this.file);
         }
-        
+        else{
+          this.phase = true;
+          this.initDocument = this.documentService.getFromAllDocuments(this.id);
+        }
       }
     )
     
   }
+
   imageInit(file:File){
     const reader = new FileReader();
     reader.onload = (e) => {    
@@ -55,7 +71,7 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
   }
 
   onDelete(){
-    this.documentService.deleteDocument(this.id);
+    this.documentService.deleteFromAllDocuments(this.id);
     this.router.navigate(['../'] , {relativeTo:this.route});
   }
 

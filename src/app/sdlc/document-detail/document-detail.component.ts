@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
 import { dpFiles } from 'src/app/dpFiles.model';
 import { files } from 'src/app/files.model';
+import { initFiles } from 'src/app/initFiles.model';
 
 @Component({
   selector: 'app-document-detail',
@@ -14,7 +15,7 @@ import { files } from 'src/app/files.model';
 export class DocumentDetailComponent implements OnInit , OnDestroy {
 
   df:FormGroup;
-  switchTabs:boolean = false;
+  switchTabs:number = 0;
   file:files ;
   imageFile:File;
   documents:files[] = [];
@@ -33,9 +34,31 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
     
   }
 
-  onSwitchTabs(state:boolean){
+  onSwitchTabs(state:number){
     this.switchTabs = state;
   }
+
+  /* Start of Initialization Phase Code */
+
+  onInitSubmit(form:NgForm){
+    const req1 = form.value.initName;
+    const date1 = form.value.start;
+    const date2 = form.value.end;
+    const req2 = form.value.initReq2;
+    const req3 = form.value.initReq3;
+    const req4 = form.value.initReq4;
+    const req5 = form.value.initReq5;
+    const document = new initFiles(req1 , date1 , date2 , req2 , req3 , req4 , req5);
+    this.documentService.addInitDocument(document);
+
+    form.reset();
+    this.route.navigate(['/sdlc']);
+  } 
+
+  /* End of Initialization Phase Code */
+
+  /* Start of Requirements Phase Code */
+
   onUpload(event){
     this.imageFile = event.target.files[0];
   }
@@ -54,6 +77,11 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
     this.route.navigate(['/sdlc']);
   }
 
+  onReset(form:NgForm){
+    form.reset();
+  }
+
+  /* End of Requirements Phase Code */
 
   /* Design Phase Component Typescript Code From Here */
 

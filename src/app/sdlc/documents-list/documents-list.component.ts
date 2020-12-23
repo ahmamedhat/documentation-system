@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
-import { files } from 'src/app/files.model';
 
 @Component({
   selector: 'app-documents-list',
@@ -9,13 +8,13 @@ import { files } from 'src/app/files.model';
   styleUrls: ['./documents-list.component.css']
 })
 export class DocumentsListComponent implements OnInit , OnDestroy{
-  documents: files[] = [];
+  documents: any[] = [];
   sub:Subscription;
   constructor(private documentService:docService) { }
   
   ngOnInit(): void {
     this.getDocuments();
-    this.sub = this.documentService.documentsChanged.subscribe(
+    this.sub = this.documentService.allDocumentsChanged.subscribe(
       documents => {
         this.documents = documents;
       }
@@ -23,7 +22,7 @@ export class DocumentsListComponent implements OnInit , OnDestroy{
   }
 
   getDocuments(){
-    this.documents = this.documentService.getDocuments();
+    this.documents = this.documentService.getAllDocuments();
   }
 
   ngOnDestroy(){

@@ -1,25 +1,54 @@
 <div class="container">
-    <div class="req-phase">
-        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-            <div class="reqs">
-                <label for="name" id="name">Document Name:</label>
-                <input type="text" name="name" [ngModel] = "documentName" required>
-                <label for="name" id="name">Requirement 1:</label>
-                <input type="text" name="req1" [ngModel] = "req1" required>
-                <label for="name" id="name">Requirement 2:</label>
-                <input type="text" name="req2" [ngModel] = "req2" required>
-                <label for="name" id="name">Requirement 3:</label>
-                <input type="text" name="req3" [ngModel] = "req3" required>
-                <label for="name" id="name">Requirement 4:</label>
-                <input type="text" name="req4" [ngModel] = "req4" required>
-                <label for="img">Select image:</label>
-                <input type="file" name="file" (change)="onUpload($event)" [ngModel] = "file" accept="image/*">
-                <img #img src="" alt="file">
-            </div>
-            <div class="buttons">
-                <button type="submit" [disabled]="!form.valid" [ngClass]="{'disabled':!form.valid}">Save</button>
-                <button type="button" (click) = "onCancel()">Cancel</button>
-            </div>
-        </form>
-    </div>    
+    <div *ngIf="phase">
+        <div class="req-phase">
+            <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+                <div class="reqs">
+                    <label for="name" id="name">Document Name:</label>
+                    <input type="text" name="name" [ngModel] = "documentName" required>
+                    <label for="name" id="name">Requirement 1:</label>
+                    <input type="text" name="req1" [ngModel] = "req1" required>
+                    <label for="name" id="name">Requirement 2:</label>
+                    <input type="text" name="req2" [ngModel] = "req2" required>
+                    <label for="name" id="name">Requirement 3:</label>
+                    <input type="text" name="req3" [ngModel] = "req3" required>
+                    <label for="name" id="name">Requirement 4:</label>
+                    <input type="text" name="req4" [ngModel] = "req4" required>
+                    <label for="img">Select image:</label>
+                    <input type="file" name="file" (change)="onUpload($event)" [ngModel] = "file" accept="image/*">
+                    <img #img src="" alt="file">
+                </div>
+                <div class="buttons">
+                    <button type="submit" [disabled]="!form.valid" [ngClass]="{'disabled':!form.valid}">Save</button>
+                    <button type="button" (click) = "onCancel()">Cancel</button>
+                </div>
+            </form>
+        </div>    
+    </div>
+    <div *ngIf="!phase">
+        <div class="req-phase">
+            <form #initForm="ngForm" (ngSubmit)="onSubmitInit(initForm)">
+                <div class="reqs">
+                    <label for="name" id="name">Project Title:</label>
+                    <input type="text" name="initName" [ngModel] = "initDocumentObject.documentName" required>
+                    <label for="name" id="name">Project Start Date:</label>
+                    <input type="text" name="date1" [ngModel] = "initDocumentObject.date1" required>
+                    <label for="name" id="name">Project End Date:</label>
+                    <input type="text" name="date2" [ngModel] = "initDocumentObject.date2" required>
+                    <label for="name" id="name">Project Objectives:</label>
+                    <input type="text" name="initReq2" [ngModel] = "initDocumentObject.req2" required>
+                    <label for="name" id="name">Project Manager:</label>
+                    <input type="text" name="initReq3" [ngModel] = "initDocumentObject.req3" required>
+                    <label for="name" id="name">Budget Information:</label>
+                    <input type="text" name="initReq4" [ngModel] = "initDocumentObject.req4" required>
+                    <label for="name" id="name">Project Scope Statements:</label>
+                    <input type="text" name="initReq5" [ngModel] = "initDocumentObject.req5" required>
+                </div>
+                <div class="buttons">
+                    <button type="submit" [disabled]="!initForm.valid" [ngClass]="{'disabled':!initForm.valid}">Save</button>
+                    <button type="button" (click) = "onCancel()">Cancel</button>
+                </div>
+            </form>
+        </div>    
+    </div>
+    
 </div>

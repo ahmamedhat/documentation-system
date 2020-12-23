@@ -1,29 +1,63 @@
 <div class="container">
-    <div class="reqs">
-        <div class="req-info">
-            <p>Document Name:</p>
-            <p>{{document.documentName}}</p>
+    <div *ngIf="!phase">
+        <div class="reqs">
+            <div class="req-info">
+                <p>Phase Name:</p>
+                <p>{{document.documentName}}</p>
+            </div>
+            <div class="req-info">
+                <p>Purpose of Software being Developed:</p>
+                <p>{{document.req1}}</p>
+            </div>
+            <div class="req-info">
+                <p>Intended Audience:</p>
+                <p>{{document.req2}}</p>
+            </div>
+            <div class="req-info">
+                <p>Overall Description of the Software:</p>
+                <p>{{document.req3}}</p>
+            </div>
+            <div class="req-info">
+                <p>System Features and Requirements:</p>
+                <p>{{document.req4}}</p>
+            </div>
+            <div class="req-info">
+                <p style="margin-top: 5em;">Use Case:</p>
+                <div class="image-container">
+                    <img #img src="" alt="file">
+                </div>
+            </div>
         </div>
-        <div class="req-info">
-            <p>Requirement 1:</p>
-            <p>{{document.req1}}</p>
-        </div>
-        <div class="req-info">
-            <p>Requirement 2:</p>
-            <p>{{document.req2}}</p>
-        </div>
-        <div class="req-info">
-            <p>Requirement 3:</p>
-            <p>{{document.req3}}</p>
-        </div>
-        <div class="req-info">
-            <p>Requirement 4:</p>
-            <p>{{document.req4}}</p>
-        </div>
-        <div class="req-info">
-            <p style="margin-top: 5em;">File:</p>
-            <div class="image-container">
-                <img #img src="" alt="file">
+    </div>
+    <div *ngIf="phase">
+        <div class="reqs">
+            <div class="req-info">
+                <p>Project Title:</p>
+                <p>{{initDocument.documentName}}</p>
+            </div>
+            <div class="req-info">
+                <p>Project Start Date:</p>
+                <p>{{initDocument.date1}}</p>
+            </div>
+            <div class="req-info">
+                <p>Project End Date:</p>
+                <p>{{initDocument.date2}}</p>
+            </div>
+            <div class="req-info">
+                <p>Project Objectives:</p>
+                <p>{{initDocument.req2}}</p>
+            </div>
+            <div class="req-info">
+                <p>Project Manager:</p>
+                <p>{{initDocument.req3}}</p>
+            </div>
+            <div class="req-info">
+                <p>Budget Information:</p>
+                <p>{{initDocument.req4}}</p>
+            </div>
+            <div class="req-info">
+                <p>Project Scope Statements:</p>
+                <p>{{initDocument.req5}}</p>
             </div>
         </div>
     </div>
@@ -31,4 +65,6 @@
         <button (click)="onEdit()">Edit</button>
         <button (click)="onDelete()">Delete</button>
     </div>
+
+
 </div>

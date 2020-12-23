@@ -1,30 +1,57 @@
 <div class="container">
     <ul>
-        <li (click)="onSwitchTabs(false)" [ngClass]="{'active': !switchTabs}">Requirements Phase</li>
-        <li (click)="onSwitchTabs(true)" [ngClass]="{'active': switchTabs}">Design Phase</li>
+        <li (click)="onSwitchTabs(0)" [ngClass]="{'active': switchTabs === 0}">Initiantion Phase</li>
+        <li (click)="onSwitchTabs(1)" [ngClass]="{'active': switchTabs === 1}">Requirements Phase</li>
+        <li (click)="onSwitchTabs(2)" [ngClass]="{'active': switchTabs === 2}">Design Phase</li>
     </ul>
-    <div class="req-phase" *ngIf="!switchTabs">
+
+    <div class="init-phase" *ngIf="switchTabs === 0">
+        <form #initForm ="ngForm" (ngSubmit)="onInitSubmit(initForm)">
+            <div class="reqs">
+                <label>Project Title:</label>
+                <input type="text" name="initName" ngModel required>
+                <label>Project Start Date:</label>
+                <input type="date" name="start" ngModel required>
+                <label>Project End Date:</label>
+                <input type="date" name="end" ngModel required>
+                <label>Project Objectives:</label>
+                <input type="text" name="initReq2" ngModel required>
+                <label>Project Manager:</label>
+                <input type="text" name="initReq3" ngModel required>
+                <label>Budget Information:</label>
+                <input type="text" name="initReq4" ngModel required>
+                <label>Project Scope Statements:</label>
+                <input type="text" name="initReq5" ngModel required>               
+            </div>
+            <div class="buttons">
+                <button type="submit" [disabled]="!initForm.valid" [ngClass]="{'disabled':!initForm.valid}">Save</button>
+                <button type="button" [disabled]="!initForm.value" [ngClass]="{'disabled':!initForm.dirty}" (click)="onReset(initForm)">Reset</button>
+            </div>
+        </form>
+    </div>
+    <div class="req-phase" *ngIf="switchTabs === 1">
         <form #form="ngForm" (ngSubmit)="onSubmit(form)">
             <div class="reqs">
-                <label for="name" id="name">Document Name:</label>
+                <label>Phase Name:</label>
                 <input type="text" name="name" ngModel required>
-                <label for="name" id="name">Requirement 1:</label>
+                <label>Purpose of Software being Developed:</label>
                 <input type="text" name="req1" ngModel required>
-                <label for="name" id="name">Requirement 2:</label>
+                <label>Intended Audience:</label>
                 <input type="text" name="req2" ngModel required>
-                <label for="name" id="name">Requirement 3:</label>
+                <label>Overall Description of the Software:</label>
                 <input type="text" name="req3" ngModel required>
-                <label for="name" id="name">Requirement 4:</label>
+                <label>System Features and Requirements:</label>
                 <input type="text" name="req4" ngModel required>
-                <label for="img">Select image:</label>
+                <label for="img">Use Case:</label>
                 <input type="file" name="file" (change)="onUpload($event)" ngModel required accept="image/*">
             </div>
             <div class="buttons">
                 <button type="submit" [disabled]="!form.valid" [ngClass]="{'disabled':!form.valid}">Save</button>
+                <button type="button" [disabled]="!form.value" [ngClass]="{'disabled':!form.dirty}" (click)="onReset(form)">Reset</button>
             </div>
         </form>
     </div>
-    <div class="d-phase" *ngIf="switchTabs">
+    <div class="d-phase" *ngIf="switchTabs === 2">
         <form [formGroup] = "df" (ngSubmit)="onDpSubmit()">
             <div formArrayName="documents">
                 <div class="reqs" *ngFor="let docControl of controls; let i = index" [formGroupName]="i">

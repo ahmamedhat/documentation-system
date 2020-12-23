@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
 import { files } from 'src/app/files.model';
+import { initFiles } from 'src/app/initFiles.model';
 
 @Component({
   selector: 'app-document-edit',
@@ -11,10 +12,22 @@ import { files } from 'src/app/files.model';
   styleUrls: ['./document-edit.component.css']
 })
 export class DocumentEditComponent implements OnInit {
-  @ViewChild('img' , {static:true}) imageFile;
+  @ViewChild('img' , {static:false}) imageFile;
+  phase:boolean;
   sub:Subscription;
   id:number;
   document:files;
+  initDocument:initFiles;
+  initDocumentObject:initFiles ={
+    documentName:'',
+    date1:'',
+    date2:'',
+    req2:'',
+    req3:'',
+    req4:'',
+    req5:''
+  }
+
   documentName:string;
   req1:string;
   req2:string;
@@ -31,14 +44,48 @@ export class DocumentEditComponent implements OnInit {
     this.sub = this.router.params.subscribe(
       (params:Params) => {
         this.id = +params['id'];
-        this.document = this.documentService.getDocument(this.id);
-        this.formInit();
+        if(!this.documentService.getFromAllDocuments(this.id)){
+          this.route.navigate(['sdlc']);
+        }
+        else if(!this.documentService.documentCheck(this.id)){
+          this.document = this.documentService.getFromAllDocuments(this.id);
+          this.phase = true;
+          this.formInit();
+          this.imagInit(this.document.file);
+
+        }
+        else{
+          this.initDocument = this.documentService.getFromAllDocuments(this.id);
+          this.initPhaseForm();
+        }
       }
     )
 
-    this.imagInit(this.document.file);
     
   }
+
+  /* Start of Initialization Phase Code */
+
+  initPhaseForm(){
+    this.initDocumentObject = this.initDocument
+  }
+
+  onSubmitInit(form:NgForm){
+    const name = form.value.initName;
+    const date1 = form.value.date1;
+    const date2 = form.value.date2;
+    const req2 = form.value.initReq2;
+    const req3 = form.value.initReq3;
+    const req4 = form.value.initReq4;
+    const req5 = form.value.initReq5;
+
+    const document = new initFiles (name , date1 , date2 , req2 , req3 , req4 , req5);
+    this.documentService.editDocuments(document , this.id);
+    this.route.navigate(['../'] , {relativeTo:this.router});
+  }
+  /* Start of Initialization Phase Code */
+
+  /* End of Requirements Phase Code */
 
   imagInit(file:File){
     this.file2 = file;
@@ -65,7 +112,7 @@ export class DocumentEditComponent implements OnInit {
     const req4 = form.value.req4;
     const file = this.checkFile(this.image);
     const document = new files(name , file , req1 , req2 , req3 , req4);
-    this.documentService.editDocument(document , this.id);
+    this.documentService.editDocuments(document , this.id);
 
     this.route.navigate(['../'] , {relativeTo:this.router});
   }
@@ -86,5 +133,7 @@ export class DocumentEditComponent implements OnInit {
       return this.document.file;
     }
   }
+
+  /* End of Requirements Phase Code */
 
 }

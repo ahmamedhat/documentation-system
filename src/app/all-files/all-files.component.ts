@@ -13,22 +13,18 @@ export class AllFilesComponent implements OnInit {
   sub1:Subscription;
   sub2:Subscription;
   allFiles:dpFiles[] = [];
-  @ViewChild('img' , {static:true}) image;
+  @ViewChild('img' , {static:false}) image;
 
   constructor(private documentService:docService) { }
 
   ngOnInit(): void {
     this.documentService.mergeFiles();
-    this.sub1 = this.documentService.documentsChanged.subscribe(
+    this.sub1 = this.documentService.allDocumentsChanged.subscribe(
       () => {
         this.documentService.mergeFiles();
       }
     )
-    this.sub2 = this.documentService.dpDocumentsChanged.subscribe(
-      () => {
-        this.documentService.mergeFiles();
-      }
-    )
+
     this.allFiles = this.documentService.getAllFiles();
   }
 
