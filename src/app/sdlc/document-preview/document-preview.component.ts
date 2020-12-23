@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
 import { files } from 'src/app/files.model';
@@ -40,10 +40,7 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
     this.sub = this.route.params.subscribe(
       (params:Params) =>{
         this.id = +params['id'];
-        if(!this.documentService.getFromAllDocuments(this.id)){
-          this.router.navigate(['../'] , {relativeTo:this.route});
-        }
-        else if(!this.documentService.documentCheck(this.id)){
+        if(!this.documentService.documentCheck(this.id)){
           this.phase = false;
           this.document = this.documentService.getFromAllDocuments(this.id);
           this.file = this.document.file;

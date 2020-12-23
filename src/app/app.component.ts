@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { docService } from './documents-service';
+import { Component, OnDestroy, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -8,23 +8,12 @@ import { docService } from './documents-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit , OnDestroy{
-  @ViewChild('image' , {static:true}) imageFile:ElementRef;
-  file:File;
-  sub:Subscription;
-  state = false;
-  constructor(private docService: docService){}
+
+  constructor(private router:Router){}
   
-  /* onAddfile(event){
-    this.file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {    
-      this.imageFile.nativeElement.src = e.target.result;      
-    };
-    reader.readAsDataURL(this.file);
-  } */
 
   ngOnInit(){
-
+    this.router.navigate(['/sdlc']);
   }
 
   ngOnDestroy(){

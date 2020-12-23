@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { docService } from '../documents-service';
 import { dpFiles } from '../dpFiles.model';
@@ -8,10 +8,9 @@ import { dpFiles } from '../dpFiles.model';
   templateUrl: './all-files.component.html',
   styleUrls: ['./all-files.component.css']
 })
-export class AllFilesComponent implements OnInit {
+export class AllFilesComponent implements OnInit , OnDestroy{
 
-  sub1:Subscription;
-  sub2:Subscription;
+  sub:Subscription;
   allFiles:dpFiles[] = [];
   @ViewChild('img' , {static:false}) image;
 
@@ -19,7 +18,7 @@ export class AllFilesComponent implements OnInit {
 
   ngOnInit(): void {
     this.documentService.mergeFiles();
-    this.sub1 = this.documentService.allDocumentsChanged.subscribe(
+    this.sub = this.documentService.allDocumentsChanged.subscribe(
       () => {
         this.documentService.mergeFiles();
       }
@@ -37,5 +36,7 @@ export class AllFilesComponent implements OnInit {
     reader.readAsDataURL(imageFile);
   }
 
-
+  ngOnDestroy(){
+    this.sub.unsubscribe();
+  }
 }

@@ -9,14 +9,15 @@ import { initFiles } from "./initFiles.model";
 export class docService{
     allDocuments: any[] = [];
     allDocumentsChanged = new Subject<any[]>();
-    initDocuments: initFiles[] = [];
-    initDocumentsChanged = new Subject<initFiles[]>();
-    documents: files[] = [];
     dPdocuments:dpFiles[] = [];
     allFiles:dpFiles[] = [];
-    documentsChanged = new Subject<files[]>();    
     dpDocumentsChanged = new Subject<dpFiles[]>();
 
+
+    addToAllDocuments(document:any){
+        this.allDocuments.push(document);
+        this.allDocumentsChanged.next(this.allDocuments);
+    }
     getAllDocuments(){
         return this.allDocuments;
     }
@@ -41,42 +42,7 @@ export class docService{
         this.allDocumentsChanged.next(this.allDocuments);
     }
 
-    /* Initialization Phase Functions */
-
-    addInitDocument(document:initFiles){
-        this.initDocuments.push(document);
-        this.allDocuments.push(document);
-        this.allDocumentsChanged.next(this.allDocuments);
-        this.initDocumentsChanged.next(this.initDocuments);
-    }
-
-
-    /* End of Initialization Phase Functions */
-
-    /* Requirements Phase Functions */
     
-    addDocument(document:files){
-        this.documents.push(document);
-        this.allDocuments.push(document);
-        this.allDocumentsChanged.next(this.allDocuments);
-        this.documentsChanged.next(this.documents);
-    }
-    getDocuments(){
-        return this.documents;
-    }
-    getDocument(index:number){
-        return this.documents[index];
-    }
-    editDocument(document:files , id:number){
-        this.documents[id] = document;
-        this.documentsChanged.next(this.documents);
-    }
-    deleteDocument(id:number){
-        this.documents.splice(id , 1);
-        this.documentsChanged.next(this.documents);
-    }
-
-    /* End of Requirements Phase Functions */
     /* Design Phase Functions */
 
     addDpDocument(document:dpFiles){

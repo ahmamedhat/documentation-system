@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,7 @@ import { DocumentsListComponent } from './sdlc/documents-list/documents-list.com
 import { DocumentDetailComponent } from './sdlc/document-detail/document-detail.component';
 import { DocumentPreviewComponent } from './sdlc/document-preview/document-preview.component';
 import { DocumentEditComponent } from './sdlc/document-edit/document-edit.component';
+import { Router } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -32,4 +33,6 @@ import { DocumentEditComponent } from './sdlc/document-edit/document-edit.compon
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+ }

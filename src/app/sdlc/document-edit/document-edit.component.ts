@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -44,10 +44,7 @@ export class DocumentEditComponent implements OnInit {
     this.sub = this.router.params.subscribe(
       (params:Params) => {
         this.id = +params['id'];
-        if(!this.documentService.getFromAllDocuments(this.id)){
-          this.route.navigate(['sdlc']);
-        }
-        else if(!this.documentService.documentCheck(this.id)){
+        if(!this.documentService.documentCheck(this.id)){
           this.document = this.documentService.getFromAllDocuments(this.id);
           this.phase = true;
           this.formInit();

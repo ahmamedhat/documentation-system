@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormArray, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { initFiles } from 'src/app/initFiles.model';
   templateUrl: './document-detail.component.html',
   styleUrls: ['./document-detail.component.css']
 })
-export class DocumentDetailComponent implements OnInit , OnDestroy {
+export class DocumentDetailComponent implements OnInit {
 
   df:FormGroup;
   switchTabs:number = 0;
@@ -25,11 +25,7 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
   constructor(private documentService:docService , private route:Router , private router:ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.sub = this.documentService.documentsChanged.subscribe(
-      documents => {
-        this.documents = documents
-      }
-    )
+
     this.formInit();
     
   }
@@ -49,7 +45,7 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
     const req4 = form.value.initReq4;
     const req5 = form.value.initReq5;
     const document = new initFiles(req1 , date1 , date2 , req2 , req3 , req4 , req5);
-    this.documentService.addInitDocument(document);
+    this.documentService.addToAllDocuments(document);
 
     form.reset();
     this.route.navigate(['/sdlc']);
@@ -71,7 +67,7 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
     const req4 = form.value.req4;
     const file = this.imageFile;
     const document = new files(name , file , req1 , req2 , req3 , req4 );
-    this.documentService.addDocument(document);
+    this.documentService.addToAllDocuments(document);
     
     form.reset();
     this.route.navigate(['/sdlc']);
@@ -128,8 +124,5 @@ export class DocumentDetailComponent implements OnInit , OnDestroy {
 
   /* End of Design Phase Code */
 
-  ngOnDestroy(){
-    this.sub.unsubscribe();
-  }
 }
 
