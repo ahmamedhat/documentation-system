@@ -37,4 +37,11 @@ button:focus {
 .image-container img {
     width: 9vw;
     max-width: 9vw;
+    max-height: 18vh;
+}
+#dpP {
+    cursor: pointer;
+}
+#dpP:hover {
+    color: rgb(78, 52, 78);
 }

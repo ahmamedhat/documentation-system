@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { dpFiles } from "./dpFiles.model";
-import { files } from "./files.model";
-import { initFiles } from "./initFiles.model";
 
 @Injectable({providedIn:"root"})
 
@@ -27,10 +25,13 @@ export class docService{
     documentCheck(index:number){
         const document = this.getFromAllDocuments(index);
         if (document.date1){
-            return true;
+            return 1;
         }
-        else{
-            return false;
+        else if (document[0]){
+            return 2;
+        }
+        else {
+            return 0;
         }
     }
     editDocuments(document ,index:number){
@@ -51,27 +52,31 @@ export class docService{
     }
     getDpDocuments(){
         return this.dPdocuments;
+        
     }
 
     mergeFiles(){
-         const ds1 = this.getAllDocuments();
+        const ds1 = this.getAllDocuments();
         const ds2 = this.getDpDocuments();
         this.allFiles = [];
         for(let document of ds1){
-            if(!document.date1){
+            if(!document.date1 && !document[0]){
                 let name = document.documentName;
                 let file = document.file;
                 this.allFiles.push(new dpFiles(name , file));
             }
-            
+            else if (document[0]){
+                for (let d of document){
+                    if(d.documentName){
+                        let name = d.documentName;
+                        let file = d.file;
+                        this.allFiles.push(new dpFiles(name , file));
+                    }
+                }
+            }
         }
-        for(let document of ds2){
-            let name = document.documentName;
-            let file = document.file;
-            this.allFiles.push(new dpFiles(name , file));
-        } 
-        
     }
+    
     getAllFiles(){
         return this.allFiles;
     }

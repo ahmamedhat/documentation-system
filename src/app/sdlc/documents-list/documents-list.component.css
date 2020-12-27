@@ -38,7 +38,15 @@ ul li {
 }
 ul li:hover {
     background-color: rgb(87, 87, 87);
+    margin-left: 10px;
+    transition: all 300ms ease;
+    -moz-transition: all 300ms ease;
+    -webkit-transition: all 300ms ease;
+    -o-transition: all 300ms ease;
 }
 ul li:focus {
+    background-color: rgb(78, 52, 78);
+}
+.active{
     background-color: rgb(78, 52, 78);
 }

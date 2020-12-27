@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { docService } from '../documents-service';
 
 @Component({
   selector: 'app-sdlc',
@@ -8,7 +7,7 @@ import { docService } from '../documents-service';
 })
 export class SdlcComponent implements OnInit {
 
-  constructor(private documentService:docService) { }
+  constructor() { }
 
   ngOnInit(): void {
 

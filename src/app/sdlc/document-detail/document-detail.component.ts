@@ -19,7 +19,8 @@ export class DocumentDetailComponent implements OnInit {
   file:files ;
   imageFile:File;
   documents:files[] = [];
-  dPimageFile:File;
+  dPArray:any[] = [];
+  dPimageFile:File[] = [];
   sub:Subscription;
 
   constructor(private documentService:docService , private route:Router , private router:ActivatedRoute) { }
@@ -103,17 +104,24 @@ export class DocumentDetailComponent implements OnInit {
   }
   onDpSubmit(){
     const dpDocuments = this.df.value.documents;
+    let i =0;
     for(let document of dpDocuments){
       let name = document.dpName;
-      let file = this.dPimageFile;
+      let file = this.dPimageFile[i];
+      if (this.dPArray.length === 0){
+        this.dPArray.push(name);
+      }
+      this.dPArray.push(new dpFiles(name , file));
       let documentFile = new dpFiles(name , file);
       this.documentService.addDpDocument(documentFile);
+      i++;
     }
+    this.documentService.addToAllDocuments(this.dPArray);
     this.route.navigate(['../'] , {relativeTo:this.router});
 
   }
   onUploadDp(event){
-    this.dPimageFile = event.target.files[0];
+    this.dPimageFile.push(event.target.files[0]);
   }
   get controls() { 
     return (<FormArray>this.df.get('documents')).controls;

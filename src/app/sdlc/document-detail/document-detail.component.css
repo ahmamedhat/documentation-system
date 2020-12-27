@@ -20,19 +20,37 @@ ul li {
     border-radius: 7px;
     padding-top: .88em;
 }
+ul li:nth-child(1){
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 1px solid rgb(65, 64, 64);
+}
+ul li:nth-child(2){
+    border-radius: 0;
+}
+ul li:nth-child(3){
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 1px solid rgb(65, 64, 64);
+}
 li:hover {
     background-color: rgb(87, 87, 87);
 }
 li:focus {
     background-color: rgb(78, 52, 78);
 }
+
 .reqs {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
 }
+
 .reqs label , .reqs input{
     margin-bottom: 3px;
+}
+.reqs input{
+    margin-bottom: 7px;
 }
 
 .buttons {

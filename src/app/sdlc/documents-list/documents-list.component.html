@@ -2,6 +2,6 @@
     <button routerLink='/sdlc/detail'>Create Document</button>
     <ul>
         <li *ngFor = "let document of documents; let i = index" 
-        routerLink='/sdlc/{{i}}'>{{document.documentName}}</li>
+        routerLink='/sdlc/{{i}}'>{{document.documentName? document.documentName : document[0]}}</li>
     </ul>
 </div>

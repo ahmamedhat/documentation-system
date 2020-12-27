@@ -11,7 +11,7 @@ import { initFiles } from 'src/app/initFiles.model';
   styleUrls: ['./document-preview.component.css']
 })
 export class DocumentPreviewComponent implements OnInit , OnDestroy {
-  phase:boolean;
+  phase:number;
   file:File;
   @ViewChild('img' , {static:false}) imageFile;
   sub:Subscription;
@@ -33,6 +33,7 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
     req4:'',
     req5:'',
   };
+  dPArray:any[] = [];
 
   constructor(private route:ActivatedRoute, private router:Router , private documentService:docService) { }
 
@@ -40,15 +41,22 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
     this.sub = this.route.params.subscribe(
       (params:Params) =>{
         this.id = +params['id'];
-        if(!this.documentService.documentCheck(this.id)){
-          this.phase = false;
+        if(this.documentService.documentCheck(this.id) === 0){
+          this.phase = 0;
           this.document = this.documentService.getFromAllDocuments(this.id);
           this.file = this.document.file;
           this.imageInit(this.file);
         }
-        else{
-          this.phase = true;
+        else if (this.documentService.documentCheck(this.id) === 1){
+          this.phase = 1;
           this.initDocument = this.documentService.getFromAllDocuments(this.id);
+        }
+        else {
+          this.phase = 2;
+          this.dPArray = this.documentService.getFromAllDocuments(this.id);
+          this.file = this.dPArray[1].file;
+          this.imageInit(this.file);
+          
         }
       }
     )
@@ -56,13 +64,21 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
   }
 
   imageInit(file:File){
-    const reader = new FileReader();
-    reader.onload = (e) => {    
+    let reader = new FileReader();
+    reader.onloadend = (e) => {     
       this.imageFile.nativeElement.src = e.target.result;      
     };
     reader.readAsDataURL(file);
   }
 
+  viewImage(index: number){
+    const file = this.dPArray[index].file;
+    const reader = new FileReader();
+    reader.onloadend = (e) => {     
+      this.imageFile.nativeElement.src = e.target.result;      
+    };
+    reader.readAsDataURL(file);
+  }
   onEdit(){
     this.router.navigate(['edit'] , {relativeTo:this.route});
   }
