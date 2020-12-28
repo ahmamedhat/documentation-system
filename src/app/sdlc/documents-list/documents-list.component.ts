@@ -8,8 +8,10 @@ import { docService } from 'src/app/documents-service';
   styleUrls: ['./documents-list.component.css']
 })
 export class DocumentsListComponent implements OnInit , OnDestroy{
+  chosen:number;
   documents: any[] = [];
   sub:Subscription;
+  sub2:Subscription;
   constructor(private documentService:docService) { }
   
   ngOnInit(): void {
@@ -19,6 +21,12 @@ export class DocumentsListComponent implements OnInit , OnDestroy{
         this.documents = documents;
       }
     )
+    this.sub2 = this.documentService.chosenFileChanged.subscribe(
+      chosen => {
+        this.chosen = chosen;
+      }
+    )
+
   }
 
   getDocuments(){

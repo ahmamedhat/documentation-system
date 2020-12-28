@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, OnInit } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +12,6 @@ import { DocumentsListComponent } from './sdlc/documents-list/documents-list.com
 import { DocumentDetailComponent } from './sdlc/document-detail/document-detail.component';
 import { DocumentPreviewComponent } from './sdlc/document-preview/document-preview.component';
 import { DocumentEditComponent } from './sdlc/document-edit/document-edit.component';
-import { Router } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { Router } from '@angular/router';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { stringify } from "querystring";
 import { Subject } from "rxjs";
 import { dpFiles } from "./dpFiles.model";
 
@@ -10,6 +11,8 @@ export class docService{
     dPdocuments:dpFiles[] = [];
     allFiles:dpFiles[] = [];
     dpDocumentsChanged = new Subject<dpFiles[]>();
+    chosenFile:number;
+    chosenFileChanged = new Subject<number>();
 
 
     addToAllDocuments(document:any){
@@ -43,6 +46,10 @@ export class docService{
         this.allDocumentsChanged.next(this.allDocuments);
     }
 
+    chooseFile(id:number){
+        this.chosenFile = id;
+        this.chosenFileChanged.next(this.chosenFile);
+    }
     
     /* Design Phase Functions */
 
@@ -57,7 +64,6 @@ export class docService{
 
     mergeFiles(){
         const ds1 = this.getAllDocuments();
-        const ds2 = this.getDpDocuments();
         this.allFiles = [];
         for(let document of ds1){
             if(!document.date1 && !document[0]){

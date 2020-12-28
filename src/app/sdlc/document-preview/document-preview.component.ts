@@ -41,6 +41,7 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
     this.sub = this.route.params.subscribe(
       (params:Params) =>{
         this.id = +params['id'];
+        this.documentService.chooseFile(this.id);
         if(this.documentService.documentCheck(this.id) === 0){
           this.phase = 0;
           this.document = this.documentService.getFromAllDocuments(this.id);

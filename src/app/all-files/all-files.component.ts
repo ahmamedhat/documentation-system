@@ -10,6 +10,7 @@ import { dpFiles } from '../dpFiles.model';
 })
 export class AllFilesComponent implements OnInit , OnDestroy{
 
+  chosen: number;
   sub:Subscription;
   allFiles:dpFiles[] = [];
   @ViewChild('img' , {static:false}) image;
@@ -28,6 +29,7 @@ export class AllFilesComponent implements OnInit , OnDestroy{
   }
 
   fileChosen(id:number){
+    this.chosen = id;
     const imageFile = this.allFiles[id].file;
     const reader = new FileReader();
     reader.onload = (e) =>{
