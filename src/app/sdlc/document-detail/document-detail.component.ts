@@ -26,7 +26,7 @@ export class DocumentDetailComponent implements OnInit {
   constructor(private documentService:docService , private route:Router , private router:ActivatedRoute) { }
 
   ngOnInit(): void {
-
+    this.documentService.chooseFile(-1);
     this.formInit();
     
   }

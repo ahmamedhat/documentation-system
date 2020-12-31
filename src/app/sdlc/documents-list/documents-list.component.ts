@@ -35,5 +35,6 @@ export class DocumentsListComponent implements OnInit , OnDestroy{
 
   ngOnDestroy(){
     this.sub.unsubscribe();
+    this.sub2.unsubscribe();
   }
 }
