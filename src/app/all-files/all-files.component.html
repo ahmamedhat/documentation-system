@@ -1,7 +1,9 @@
 <div class="container">
     <div class="docs-list">
         <ul>
-            <li *ngFor="let file of allFiles; let i = index" (click)="fileChosen(i)" [ngStyle]="{'background-color': chosen === i ? 'rgb(78, 52, 78)' : 'rgb(36, 36, 36)' }">{{file.documentName}}</li>
+            <li *ngFor="let file of allFiles; let i = index" 
+            (click)="fileChosen(i)" 
+            [ngStyle]="{'background-color': chosen === i ? 'rgb(78, 52, 78)' : 'rgb(36, 36, 36)' }">{{file.documentName}}</li>
         </ul>
     </div>
     <div class="doc-preview">

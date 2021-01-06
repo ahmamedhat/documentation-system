@@ -3,9 +3,7 @@ import { FormArray, FormControl, FormGroup, NgForm, Validators } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
-import { dpFiles } from 'src/app/dpFiles.model';
-import { files } from 'src/app/files.model';
-import { initFiles } from 'src/app/initFiles.model';
+import { documentModel } from 'src/app/documents.model';
 
 @Component({
   selector: 'app-document-detail',
@@ -16,9 +14,7 @@ export class DocumentDetailComponent implements OnInit {
 
   df:FormGroup;
   switchTabs:number = 0;
-  file:files ;
   imageFile:File;
-  documents:files[] = [];
   dPArray:any[] = [];
   dPimageFile:File[] = [];
   sub:Subscription;
@@ -29,58 +25,68 @@ export class DocumentDetailComponent implements OnInit {
     this.documentService.chooseFile(-1);
     this.formInit();
     
+    
   }
 
   onSwitchTabs(state:number){
     this.switchTabs = state;
+    if (state === 0 || state === 1){
+      this.df.reset();
+    }
   }
 
-  /* Start of Initialization Phase Code */
+  onFormSubmit(form:NgForm , state:number){
+    let name , date1 , date2 , req1 , req2 , req3 , req4 , file , document:documentModel;
+    switch (state) {
+      case 0:
+        name = form.value.initName;
+        date1 = form.value.start;
+        date2 = form.value.end;
+        req1 = form.value.initReq2;
+        req2 = form.value.initReq3;
+        req3 = form.value.initReq4;
+        req4 = form.value.initReq5;
+        document = {documentName: name , date1:date1 , date2:date2 , req1:req1 , req2:req2 , req3:req3 , req4:req4 };
+        this.documentService.addToAllDocument(document);
+        break;
 
-  onInitSubmit(form:NgForm){
-    const req1 = form.value.initName;
-    const date1 = form.value.start;
-    const date2 = form.value.end;
-    const req2 = form.value.initReq2;
-    const req3 = form.value.initReq3;
-    const req4 = form.value.initReq4;
-    const req5 = form.value.initReq5;
-    const document = new initFiles(req1 , date1 , date2 , req2 , req3 , req4 , req5);
-    this.documentService.addToAllDocuments(document);
+      case 1:
+        name = form.value.name;
+        req1 = form.value.req1;
+        req2 = form.value.req2;
+        req3 = form.value.req3;
+        req4 = form.value.req4;
+        file = this.imageFile;
+        document = {documentName: name , req1:req1 , req2:req2 , req3:req3 , req4:req4 , file: file};
+        this.documentService.addToAllDocument(document);
+        break;
+      case 2:
+        const dpDocuments = this.df.value.documents;
+        let i = 0;
+        for(let document of dpDocuments){
+          let name = document.dpName;
+          let file = this.dPimageFile[i];
+          if (this.dPArray.length === 0){
+            this.dPArray.push(name);
+          }
+          let dp:documentModel = {documentName: name , file: file};
+          this.dPArray.push(dp);
+          i++;
+        }
+        this.documentService.addToAllDocument(this.dPArray);
+    }
+    this.route.navigate(['sdlc']);
+  }
 
-    form.reset();
-    this.route.navigate(['/sdlc']);
-  } 
-
-  /* End of Initialization Phase Code */
-
-  /* Start of Requirements Phase Code */
+ 
 
   onUpload(event){
     this.imageFile = event.target.files[0];
   }
 
-  onSubmit(form:NgForm){
-    const name = form.value.name;
-    const req1 = form.value.req1;
-    const req2 = form.value.req2;
-    const req3 = form.value.req3;
-    const req4 = form.value.req4;
-    const file = this.imageFile;
-    const document = new files(name , file , req1 , req2 , req3 , req4 );
-    this.documentService.addToAllDocuments(document);
-    
-    form.reset();
-    this.route.navigate(['/sdlc']);
-  }
-
   onReset(form:NgForm){
     form.reset();
   }
-
-  /* End of Requirements Phase Code */
-
-  /* Design Phase Component Typescript Code From Here */
 
   formInit(){
     let documentArray = new FormArray([]);
@@ -93,7 +99,6 @@ export class DocumentDetailComponent implements OnInit {
     this.df = new FormGroup({
       'documents': documentArray,
     })
-
   }
 
   addDocument(){
@@ -102,35 +107,17 @@ export class DocumentDetailComponent implements OnInit {
       'dpFile': new FormControl(null , Validators.required)
     }))
   }
-  onDpSubmit(){
-    const dpDocuments = this.df.value.documents;
-    let i =0;
-    for(let document of dpDocuments){
-      let name = document.dpName;
-      let file = this.dPimageFile[i];
-      if (this.dPArray.length === 0){
-        this.dPArray.push(name);
-      }
-      this.dPArray.push(new dpFiles(name , file));
-      let documentFile = new dpFiles(name , file);
-      this.documentService.addDpDocument(documentFile);
-      i++;
-    }
-    this.documentService.addToAllDocuments(this.dPArray);
-    this.route.navigate(['../'] , {relativeTo:this.router});
 
-  }
   onUploadDp(event){
     this.dPimageFile.push(event.target.files[0]);
   }
+
   get controls() { 
     return (<FormArray>this.df.get('documents')).controls;
   }
   get controls2() { 
     return (<FormArray>this.df.get('documents'));
   }
-
-  /* End of Design Phase Code */
 
 }
 

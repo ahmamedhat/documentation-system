@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
-import { files } from 'src/app/files.model';
-import { initFiles } from 'src/app/initFiles.model';
+import { documentModel } from 'src/app/documents.model';
 
 @Component({
   selector: 'app-document-preview',
@@ -12,27 +11,10 @@ import { initFiles } from 'src/app/initFiles.model';
 })
 export class DocumentPreviewComponent implements OnInit , OnDestroy {
   phase:number;
-  file:File;
   @ViewChild('img' , {static:false}) imageFile;
   sub:Subscription;
   id:number;
-  document:files = {
-    documentName:'',
-    req1:'',
-    req2:'',
-    req3:'',
-    req4:'',
-    file:null,
-  };
-  initDocument:initFiles = {
-    documentName:'',
-    date1:'',
-    date2:'',
-    req2:'',
-    req3:'',
-    req4:'',
-    req5:'',
-  };
+  documentFormObject:documentModel;
   dPArray:any[] = [];
 
   constructor(private route:ActivatedRoute, private router:Router , private documentService:docService) { }
@@ -42,23 +24,20 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
       (params:Params) =>{
         this.id = +params['id'];
         this.documentService.chooseFile(this.id);
-        if(this.documentService.documentCheck(this.id) === 0){
-          this.phase = 0;
-          this.document = this.documentService.getFromAllDocuments(this.id);
-          this.file = this.document.file;
-          this.imageInit(this.file);
-        }
-        else if (this.documentService.documentCheck(this.id) === 1){
+        this.documentFormObject = this.documentService.getFromAllDocument(this.id);
+        if (this.documentFormObject.date1){
           this.phase = 1;
-          this.initDocument = this.documentService.getFromAllDocuments(this.id);
+        }
+        else if(this.documentFormObject.file && this.documentFormObject.req1){
+          this.phase = 0;
+          let file = this.documentFormObject.file;
+          this.imageInit(file);
         }
         else {
           this.phase = 2;
-          this.dPArray = this.documentService.getFromAllDocuments(this.id);
-          this.file = this.dPArray[1].file;
-          this.imageInit(this.file);
-          
-        }
+          let file = this.documentFormObject[1].file;
+          this.imageInit(file);
+        } 
       }
     )
     
@@ -73,7 +52,7 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
   }
 
   viewImage(index: number){
-    const file = this.dPArray[index].file;
+    const file = this.documentFormObject[index].file;
     const reader = new FileReader();
     reader.onloadend = (e) => {     
       this.imageFile.nativeElement.src = e.target.result;      
@@ -85,7 +64,7 @@ export class DocumentPreviewComponent implements OnInit , OnDestroy {
   }
 
   onDelete(){
-    this.documentService.deleteFromAllDocuments(this.id);
+    this.documentService.deleteFromAllDocument(this.id);
     this.router.navigate(['../'] , {relativeTo:this.route});
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { docService } from '../documents-service';
-import { dpFiles } from '../dpFiles.model';
+import { documentModel } from '../documents.model';
 
 @Component({
   selector: 'app-all-files',
@@ -12,14 +12,14 @@ export class AllFilesComponent implements OnInit , OnDestroy{
 
   chosen: number;
   sub:Subscription;
-  allFiles:dpFiles[] = [];
+  allFiles:documentModel[] = [];
   @ViewChild('img' , {static:false}) image;
 
   constructor(private documentService:docService) { }
 
   ngOnInit(): void {
     this.documentService.mergeFiles();
-    this.sub = this.documentService.allDocumentsChanged.subscribe(
+    this.sub = this.documentService.allDocumentChanged.subscribe(
       () => {
         this.documentService.mergeFiles();
       }

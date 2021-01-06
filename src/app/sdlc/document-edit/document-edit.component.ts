@@ -1,40 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { docService } from 'src/app/documents-service';
-import { files } from 'src/app/files.model';
-import { initFiles } from 'src/app/initFiles.model';
+import { documentModel } from 'src/app/documents.model';
+
 
 @Component({
   selector: 'app-document-edit',
   templateUrl: './document-edit.component.html',
   styleUrls: ['./document-edit.component.css']
 })
-export class DocumentEditComponent implements OnInit {
+export class DocumentEditComponent implements OnInit , OnDestroy {
   @ViewChild('img' , {static:false}) imageFile;
   phase:boolean;
   sub:Subscription;
   id:number;
-  document:files;
-  initDocument:initFiles;
-  initDocumentObject:initFiles ={
-    documentName:'',
-    date1:'',
-    date2:'',
-    req2:'',
-    req3:'',
-    req4:'',
-    req5:''
-  }
-
-  documentName:string;
-  req1:string;
-  req2:string;
-  req3:string;
-  req4:string;
-  file:File;
-  file2:File;
+  documentFormObject:documentModel;
   image:File;
 
 
@@ -44,75 +26,60 @@ export class DocumentEditComponent implements OnInit {
     this.sub = this.router.params.subscribe(
       (params:Params) => {
         this.id = +params['id'];
-        if(!this.documentService.documentCheck(this.id)){
-          this.document = this.documentService.getFromAllDocuments(this.id);
+        this.documentFormObject = this.documentService.getFromAllDocument(this.id);
+        if (this.documentFormObject.file){
+          this.imagInit(this.documentFormObject.file);
           this.phase = true;
-          this.formInit();
-          this.imagInit(this.document.file);
-
         }
         else{
-          this.initDocument = this.documentService.getFromAllDocuments(this.id);
-          this.initPhaseForm();
+          this.phase = false;
         }
       }
     )
+  }
 
+  /* Optimized Code */
+
+  onFormSubmit(form:NgForm , state:boolean){
+    let name , date1 , date2 , req1 , req2 , req3 , req4 , file , document:documentModel;
+    switch (state) {
+      case false:
+        name = form.value.initName;
+        date1 = form.value.date1;
+        date2 = form.value.date2;
+        req1 = form.value.initReq2;
+        req2 = form.value.initReq3;
+        req3 = form.value.initReq4;
+        req4 = form.value.initReq5; 
+        document = {documentName: name , date1:date1 , date2:date2 , req1:req1 , req2:req2 , req3:req3 , req4:req4 };
+        this.documentService.editDocument(document , this.id);
+        break;
     
-  }
-
-  /* Start of Initialization Phase Code */
-
-  initPhaseForm(){
-    this.initDocumentObject = this.initDocument
-  }
-
-  onSubmitInit(form:NgForm){
-    const name = form.value.initName;
-    const date1 = form.value.date1;
-    const date2 = form.value.date2;
-    const req2 = form.value.initReq2;
-    const req3 = form.value.initReq3;
-    const req4 = form.value.initReq4;
-    const req5 = form.value.initReq5;
-
-    const document = new initFiles (name , date1 , date2 , req2 , req3 , req4 , req5);
-    this.documentService.editDocuments(document , this.id);
+      case true:
+        name = form.value.name;
+        req1 = form.value.req1;
+        req2 = form.value.req2;
+        req3 = form.value.req3;
+        req4 = form.value.req4;
+        file = this.checkFile(this.image);
+        document = {documentName: name , req1:req1 , req2:req2 , req3:req3 , req4:req4 , file: file}; 
+        this.documentService.editDocument(document , this.id);
+        break;
+      }
     this.route.navigate(['../'] , {relativeTo:this.router});
   }
-  /* Start of Initialization Phase Code */
 
-  /* End of Requirements Phase Code */
 
   imagInit(file:File){
-    this.file2 = file;
+    let image = file;
     const reader = new FileReader();
     reader.onload = (e) => {    
       this.imageFile.nativeElement.src = e.target.result;      
     };
-    reader.readAsDataURL(this.file2);
+    reader.readAsDataURL(image);
 
   }
 
-  formInit(){
-    this.documentName = this.document.documentName;
-    this.req1 = this.document.req1;
-    this.req2 = this.document.req2;
-    this.req3 = this.document.req3;
-    this.req4 = this.document.req4;
-  }
-  onSubmit(form:NgForm){
-    const name = form.value.name;
-    const req1 = form.value.req1;
-    const req2 = form.value.req2;
-    const req3 = form.value.req3;
-    const req4 = form.value.req4;
-    const file = this.checkFile(this.image);
-    const document = new files(name , file , req1 , req2 , req3 , req4);
-    this.documentService.editDocuments(document , this.id);
-
-    this.route.navigate(['../'] , {relativeTo:this.router});
-  }
   onUpload(event){
     this.image = event.target.files[0];
     this.imagInit(this.image);
@@ -127,10 +94,12 @@ export class DocumentEditComponent implements OnInit {
       return file;
     }
     else{
-      return this.document.file;
+      return this.documentFormObject.file;
     }
   }
 
-  /* End of Requirements Phase Code */
+  ngOnDestroy (){
+    this.sub.unsubscribe();
+  }
 
 }

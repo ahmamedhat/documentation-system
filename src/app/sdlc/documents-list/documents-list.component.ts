@@ -16,7 +16,7 @@ export class DocumentsListComponent implements OnInit , OnDestroy{
   
   ngOnInit(): void {
     this.getDocuments();
-    this.sub = this.documentService.allDocumentsChanged.subscribe(
+    this.sub = this.documentService.allDocumentChanged.subscribe(
       documents => {
         this.documents = documents;
       }
@@ -30,7 +30,7 @@ export class DocumentsListComponent implements OnInit , OnDestroy{
   }
 
   getDocuments(){
-    this.documents = this.documentService.getAllDocuments();
+    this.documents = this.documentService.getAllDocument();
   }
 
   ngOnDestroy(){

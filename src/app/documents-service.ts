@@ -1,81 +1,63 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { dpFiles } from "./dpFiles.model";
+import { documentModel } from "./documents.model";
 
 @Injectable({providedIn:"root"})
 
 export class docService{
-    allDocuments: any[] = [];
-    allDocumentsChanged = new Subject<any[]>();
-    dPdocuments:dpFiles[] = [];
-    allFiles:dpFiles[] = [];
-    dpDocumentsChanged = new Subject<dpFiles[]>();
+
+    allFiles:documentModel[] = [];
     chosenFile:number;
     chosenFileChanged = new Subject<number>();
+    allDocument: any[] = [];
+    allDocumentChanged = new Subject<documentModel[]>();
 
-
-    addToAllDocuments(document:any){
-        this.allDocuments.push(document);
-        this.allDocumentsChanged.next(this.allDocuments);
-    }
-    getAllDocuments(){
-        return this.allDocuments;
-    }
-    getFromAllDocuments(index:number){
-        return this.allDocuments[index];
-    }
-    documentCheck(index:number){
-        const document = this.getFromAllDocuments(index);
-        if (document.date1){
-            return 1;
-        }
-        else if (document[0]){
-            return 2;
-        }
-        else {
-            return 0;
-        }
-    }
-    editDocuments(document ,index:number){
-        this.allDocuments[index] = document;
-        this.allDocumentsChanged.next(this.allDocuments);
-    }
-    deleteFromAllDocuments(index:number){
-        this.allDocuments.splice(index , 1);
-        this.allDocumentsChanged.next(this.allDocuments);
-    }
 
     chooseFile(id:number){
         this.chosenFile = id;
         this.chosenFileChanged.next(this.chosenFile);
     }
-    
-    /* Design Phase Functions */
 
-    addDpDocument(document:dpFiles){
-        this.dPdocuments.push(document);
-        this.dpDocumentsChanged.next(this.dPdocuments);
+    /* New Optimized Code */
+
+    addToAllDocument(document:any){
+        this.allDocument.push(document);
+        this.allDocumentChanged.next(this.allDocument);
     }
-    getDpDocuments(){
-        return this.dPdocuments;
-        
+    getAllDocument(){
+        return this.allDocument;
     }
+    editDocument(document ,index:number){
+        this.allDocument[index] = document;
+        this.allDocumentChanged.next(this.allDocument);
+    }
+    deleteFromAllDocument(index:number){
+        this.allDocument.splice(index , 1);
+        this.allDocumentChanged.next(this.allDocument);
+    }
+    getFromAllDocument(index:number){
+        return this.allDocument[index];
+    }
+
 
     mergeFiles(){
-        const ds1 = this.getAllDocuments();
+        const ds1 = this.getAllDocument();
         this.allFiles = [];
+        let doc:documentModel;
         for(let document of ds1){
             if(!document.date1 && !document[0]){
                 let name = document.documentName;
                 let file = document.file;
-                this.allFiles.push(new dpFiles(name , file));
+                doc = {documentName: name , file: file};
+                this.allFiles.push(doc);
             }
             else if (document[0]){
                 for (let d of document){
                     if(d.documentName){
                         let name = d.documentName;
                         let file = d.file;
-                        this.allFiles.push(new dpFiles(name , file));
+                        doc = {documentName: name , file: file};
+                        this.allFiles.push(doc);
                     }
                 }
             }
@@ -86,6 +68,5 @@ export class docService{
         return this.allFiles;
     }
 
-    /* End of Design Phase Code */
 
 }

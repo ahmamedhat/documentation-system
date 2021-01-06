@@ -6,7 +6,7 @@
     </ul>
 
     <div class="init-phase" *ngIf="switchTabs === 0">
-        <form #initForm ="ngForm" (ngSubmit)="onInitSubmit(initForm)">
+        <form #initForm ="ngForm" (ngSubmit)="onFormSubmit(initForm , 0)">
             <div class="reqs">
                 <label>Project Title:</label>
                 <input type="text" name="initName" ngModel required>
@@ -30,7 +30,7 @@
         </form>
     </div>
     <div class="req-phase" *ngIf="switchTabs === 1">
-        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+        <form #form="ngForm" (ngSubmit)="onFormSubmit(form , 1)">
             <div class="reqs">
                 <label>Phase Name:</label>
                 <input type="text" name="name" ngModel required>
@@ -52,7 +52,7 @@
         </form>
     </div>
     <div class="d-phase" *ngIf="switchTabs === 2">
-        <form [formGroup] = "df" (ngSubmit)="onDpSubmit()">
+        <form [formGroup] = "df" (ngSubmit)="onFormSubmit(null , 2)">
             <div formArrayName="documents">
                 <div class="reqs" *ngFor="let docControl of controls; let i = index" [formGroupName]="i">
                     <label for="name" id="name">Document Name:</label>
